@@ -58,15 +58,20 @@ const detectPanicAndAlertFlow = ai.defineFlow(
     outputSchema: DetectPanicAndAlertOutputSchema,
   },
   async (input): Promise<DetectPanicAndAlertOutput> => {
-    // If the input is empty, return a safe default.
+    // If the input is empty, return a safe default with explicit types.
     if (!input.videoDataUri) {
       return {
         panicDetected: false,
-        alertLevel: 'low',
-        actionsTaken: [],
+        alertLevel: 'low' as const,
+        actionsTaken: [] as string[],
       };
     }
     const {output} = await panicDetectionPrompt(input);
-    return output as DetectPanicAndAlertOutput;
+
+    // Validate and narrow the output using the Zod schema to ensure correct types
+    // This will throw at runtime if the prompt output doesn't match the schema, which is desirable
+    // to avoid returning an object with wrong types into the flow.
+    const parsed = DetectPanicAndAlertOutputSchema.parse(output as unknown);
+    return parsed;
   }
 );
