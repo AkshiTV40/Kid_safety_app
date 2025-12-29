@@ -129,3 +129,34 @@ Ensure all resources (images, APIs) are served over HTTPS, not HTTP.
 - [ ] Error logging configured
 - [ ] Performance monitoring enabled
 - [ ] Backup and disaster recovery plan
+
+---
+
+## Trusted Web Activity (TWA) / Android packaging (Bubblewrap)
+
+This repository includes helper files and a CI workflow template to build a Trusted Web Activity (TWA) Android package using Bubblewrap.
+
+Important prerequisites:
+- The app must be publicly hosted at an HTTPS URL and have a valid `manifest.json` (this repo includes `/public/manifest.json`).
+- You'll need a Java JDK and Android SDK to build locally, or configure the provided GitHub Actions workflow with secrets to build in CI.
+
+Local steps (short):
+1. Install Bubblewrap: `npm i -g @bubblewrap/cli`.
+2. Run the init command pointing to your manifest: `npx @bubblewrap/cli init --manifest-url https://your-site/manifest.json` and answer the prompts (set package id, keystore details, etc.).
+3. Build the app: `npx @bubblewrap/cli build` (this produces an `.aab` file ready for Play Store upload).
+
+CI steps (this repo template):
+- There is a workflow `.github/workflows/build-twa.yml` which is a template and can be triggered manually. To use it you must add these repository secrets:
+  - `SITE_URL` — public HTTPS URL of the deployed site (ex: `https://your-project.vercel.app`)
+  - `PACKAGE_ID` — Android package id (ex: `com.example.guardianportal`)
+  - `APP_NAME` — App display name
+  - `APP_SHORT_NAME` — Short name (for launcher)
+  - `APP_VERSION_CODE` — integer version code (e.g., 1)
+  - `APP_VERSION_NAME` — display version name (e.g., 1.0.0)
+  - `KEYSTORE_JKS` — base64-encoded keystore file contents (create with `base64 my-release-key.jks`)
+  - `KEYSTORE_PASSWORD`, `KEY_ALIAS`, `KEY_PASSWORD` — keystore credentials
+  - `GOOGLE_PLAY_SERVICE_ACCOUNT` — (optional) base64-encoded Play Console service account JSON to enable uploading the AAB to Play Store
+
+Security note: Keep keystore and service account JSON in GitHub Secrets only.
+
+If you want, I can run the TWA build for you once you provide the public `SITE_URL` and add the keystore secrets. Otherwise I can provide step-by-step local commands and a review of the generated AAB.
