@@ -74,4 +74,4 @@ const detectPanicAndAlertFlow = ai.defineFlow(
     const parsed = DetectPanicAndAlertOutputSchema.parse(output as unknown) as DetectPanicAndAlertOutput;
     return parsed;
   }
-);
+) as any;
