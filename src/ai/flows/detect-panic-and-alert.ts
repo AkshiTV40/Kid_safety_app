@@ -57,7 +57,7 @@ const detectPanicAndAlertFlow = ai.defineFlow(
     inputSchema: DetectPanicAndAlertInputSchema,
     outputSchema: DetectPanicAndAlertOutputSchema,
   },
-  async input => {
+  async (input): Promise<DetectPanicAndAlertOutput> => {
     // If the input is empty, return a safe default.
     if (!input.videoDataUri) {
       return {
@@ -67,6 +67,6 @@ const detectPanicAndAlertFlow = ai.defineFlow(
       };
     }
     const {output} = await panicDetectionPrompt(input);
-    return output!;
+    return output as DetectPanicAndAlertOutput;
   }
 );

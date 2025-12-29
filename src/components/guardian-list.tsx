@@ -173,8 +173,10 @@ export default function GuardianList() {
                         </AlertDialogHeader>
                         <AlertDialogFooter>
                           <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction onClick={() => deleteGuardian(guardian.id)} variant="destructive">
-                            Delete
+                          <AlertDialogAction asChild>
+                            <Button variant="destructive" onClick={() => deleteGuardian(guardian.id)}>
+                              Delete
+                            </Button>
                           </AlertDialogAction>
                         </AlertDialogFooter>
                       </AlertDialogContent>
