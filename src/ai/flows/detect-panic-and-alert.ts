@@ -64,14 +64,14 @@ const detectPanicAndAlertFlow = ai.defineFlow(
         panicDetected: false,
         alertLevel: 'low' as const,
         actionsTaken: [] as string[],
-      };
+      } as DetectPanicAndAlertOutput;
     }
     const {output} = await panicDetectionPrompt(input);
 
     // Validate and narrow the output using the Zod schema to ensure correct types
     // This will throw at runtime if the prompt output doesn't match the schema, which is desirable
     // to avoid returning an object with wrong types into the flow.
-    const parsed = DetectPanicAndAlertOutputSchema.parse(output as unknown);
+    const parsed = DetectPanicAndAlertOutputSchema.parse(output as unknown) as DetectPanicAndAlertOutput;
     return parsed;
   }
 );
