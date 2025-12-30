@@ -1,5 +1,7 @@
 # Native FCM (Capacitor) - Android Integration Guide
 
+**Requires Capacitor v8 or later.**
+
 This document explains the steps to add native Firebase Cloud Messaging (FCM) to the Android app using Capacitor.
 
 1) Install the plugin
