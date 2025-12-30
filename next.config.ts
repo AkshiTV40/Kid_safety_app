@@ -10,8 +10,11 @@ const withPWA = require('next-pwa')({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Enable HTTPS support
-  swcMinify: true,
   reactStrictMode: true,
+  // Ignore ESLint during builds to avoid build-time ESLint serialization errors in CI
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   
   // Image optimization
   images: {

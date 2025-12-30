@@ -6,8 +6,8 @@
     "dev": "next dev --turbopack -p 9002",
     "genkit:dev": "genkit start -- tsx src/ai/dev.ts",
     "genkit:watch": "genkit start -- tsx --watch src/ai/dev.ts",
-    "build": "cross-env NODE_ENV=production DISABLE_ESLINT_PLUGIN=true next build",
-    "build:web": "cross-env NODE_ENV=production DISABLE_ESLINT_PLUGIN=true next build",
+    "build": "next build",
+    "build:web": "next build",
     "start": "next start -p $PORT",
     "start:prod": "cross-env NODE_ENV=production next start",
     "start:https": "cross-env NODE_ENV=production next start -- --https",
@@ -64,11 +64,13 @@
     "@capacitor/cli": "^6.0.0",
     "@capacitor/android": "^6.0.0",
     "@capacitor/geolocation": "^6.1.1",
-    "@capacitor-firebase/messaging": "^2.0.0",
     "recharts": "^2.15.1",
     "tailwind-merge": "^3.0.1",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.24.2"
+  },
+  "engines": {
+    "node": "18.x || 20.x"
   },
   "devDependencies": {
     "@types/node": "^20",
