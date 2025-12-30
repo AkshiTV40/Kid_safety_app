@@ -12,8 +12,8 @@ const firebaseConfig: FirebaseOptions = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID || 'APP_ID'
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
+export const app = initializeApp(firebaseConfig);
+export const db = getDatabase(app);
 
 export function sendLocation(userId: string, lat: number, lng: number, timestamp = Date.now()) {
   const locationRef = ref(db, `locations/${userId}`);

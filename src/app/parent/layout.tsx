@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import PrivacyConsent from '../../components/privacy-consent';
+import NotificationConsent from '../../components/notification-consent';
 
 export const metadata = { title: 'Parent Portal' };
 
@@ -7,6 +8,7 @@ export default function ParentLayout({ children }: { children: React.ReactNode }
   return (
     <div className="min-h-screen bg-gray-50">
       <PrivacyConsent />
+      <NotificationConsent userId={'parent-1'} />
       <header className="bg-white shadow-sm">
         <div className="max-w-3xl mx-auto p-4 flex items-center justify-between">
           <h1 className="font-semibold text-lg">Parent</h1>
