@@ -12,6 +12,7 @@ import { runPanicDetection } from '@/app/actions';
 import type { DetectPanicAndAlertOutput } from '@/ai/flows/detect-panic-and-alert';
 import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import ChildControls from '@/app/keychain/components/ChildControls';
 
 type Location = {
   latitude: number;
