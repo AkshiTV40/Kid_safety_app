@@ -1,0 +1,37 @@
+name: Build Android AAB
+
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm ci
+      - name: Build web
+        run: npm run build:web
+      - name: Install Capacitor CLI
+        run: npx cap sync android || true
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Build Android (requires Android SDK and signing keys)
+        run: |
+          cd android
+          ./gradlew bundleRelease -Pci
+        env:
+          JAVA_HOME: /opt/hostedtoolcache/jdk/17/x64
+
+# Notes:
+# - This job may need additional Android SDK installation steps and signing configs.
+# - Store ANDROID_* and signing keystore as secrets and configure gradle.properties accordingly.

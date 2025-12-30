@@ -20,6 +20,14 @@
 # production
 /build
 
+# Capacitor
+/android/
+/ios/
+
+# Keys
+/*.keystore
+/*.jks
+
 # misc
 .DS_Store
 *.pem

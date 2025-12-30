@@ -102,12 +102,18 @@ export default function GuardianKeychain() {
   const startLocationTracking = () => {
     if (navigator.geolocation) {
       locationWatcher.current = navigator.geolocation.watchPosition(
-        (position) => {
+        async (position) => {
           setHasGpsPermission(true);
-          setLocation({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          });
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          setLocation({ latitude: lat, longitude: lng });
+          try{
+            // send to firebase realtime database
+            const { sendLocation } = await import('@/lib/firebase');
+            await sendLocation('child-1', lat, lng, Date.now());
+          }catch(e){
+            console.error('Failed to send location to Firebase', e);
+          }
         },
         (error) => {
           setHasGpsPermission(false);
@@ -324,6 +330,13 @@ export default function GuardianKeychain() {
                 </AlertDescription>
               </Alert>
             )}
+            <div className="w-full">
+              <div className="mt-4">
+                {/* Child controls for foreground location sharing and quick calls */}
+                {/* @ts-ignore */}
+                <ChildControls />
+              </div>
+            </div>
             <Button
               onClick={startCall}
               disabled={isLoading || guardianCount === 0}
