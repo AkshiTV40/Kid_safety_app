@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from 'react';
-import { registerNativeFCM } from '@/lib/native-fcm';
+import { useState, useEffect } from 'react';
+import { registerNativeFCM, isNativeFCMAvailable } from '@/lib/native-fcm';
 
 export default function NativeFcmConsent({ userId = 'parent-1' }: { userId?: string }){
   const [status, setStatus] = useState<string | null>(null);
+  useEffect(()=>{ (async ()=>{ const ok = await isNativeFCMAvailable(); setStatus(ok ? 'ready' : 'not_available'); })(); }, []);
+
   async function enable(){
     setStatus('requesting');
     try{
