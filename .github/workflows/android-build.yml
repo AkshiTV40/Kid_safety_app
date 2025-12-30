@@ -20,17 +20,26 @@ jobs:
         run: npm run build:web
       - name: Install Capacitor CLI
         run: npx cap sync android || true
+      - name: Check for android platform
+        id: check-android
+        run: |
+          if [ -d android ]; then echo "android=true" >> $GITHUB_OUTPUT; else echo "android=false" >> $GITHUB_OUTPUT; fi
       - name: Set up Java
+        if: steps.check-android.outputs.android == 'true'
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
       - name: Build Android (requires Android SDK and signing keys)
+        if: steps.check-android.outputs.android == 'true'
         run: |
           cd android
           ./gradlew bundleRelease -Pci
         env:
           JAVA_HOME: /opt/hostedtoolcache/jdk/17/x64
+      - name: Skip Android build
+        if: steps.check-android.outputs.android == 'false'
+        run: echo "Android platform not found — skipping Android build. To enable CI Android builds, run 'npx cap add android' locally and commit android/ or configure CI to add the platform."
 
 # Notes:
 # - This job may need additional Android SDK installation steps and signing configs.
