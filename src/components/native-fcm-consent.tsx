@@ -8,7 +8,7 @@ export default function NativeFcmConsent({ userId = 'parent-1' }: { userId?: str
   async function enable(){
     setStatus('requesting');
     try{
-      const token = await registerNativeFCM();
+      const token = await registerNativeFCM(userId);
       if(token){
         localStorage.setItem('native_fcm_token', token);
         setStatus('enabled');
