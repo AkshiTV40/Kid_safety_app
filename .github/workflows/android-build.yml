@@ -24,12 +24,30 @@ jobs:
         id: check-android
         run: |
           if [ -d android ]; then echo "android=true" >> $GITHUB_OUTPUT; else echo "android=false" >> $GITHUB_OUTPUT; fi
+      - name: Set up Android SDK (if android/ present)
+        if: steps.check-android.outputs.android == 'true'
+        uses: android-actions/setup-android@v2
+        with:
+          api-level: 33
+          components: build-tools;33.0.2,platforms;android-33,platform-tools
       - name: Set up Java
         if: steps.check-android.outputs.android == 'true'
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
+      - name: Decode keystore and configure signing (if provided)
+        if: steps.check-android.outputs.android == 'true' && secrets.KEYSTORE_BASE64
+        run: |
+          echo "Decoding keystore..."
+          mkdir -p android/app
+          echo "$KEYSTORE_BASE64" | base64 --decode > android/app/upload-keystore.jks
+          echo "MYAPP_UPLOAD_STORE_FILE=upload-keystore.jks" >> android/gradle.properties
+          echo "MYAPP_UPLOAD_STORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}" >> android/gradle.properties
+          echo "MYAPP_UPLOAD_KEY_ALIAS=${{ secrets.KEY_ALIAS }}" >> android/gradle.properties
+          echo "MYAPP_UPLOAD_KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}" >> android/gradle.properties
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
       - name: Build Android (requires Android SDK and signing keys)
         if: steps.check-android.outputs.android == 'true'
         run: |

@@ -63,6 +63,7 @@
     "@capacitor/cli": "^6.0.0",
     "@capacitor/android": "^6.0.0",
     "@capacitor/geolocation": "^6.1.1",
+    "@capacitor-firebase/messaging": "^2.0.0",
     "recharts": "^2.15.1",
     "tailwind-merge": "^3.0.1",
     "tailwindcss-animate": "^1.0.7",
